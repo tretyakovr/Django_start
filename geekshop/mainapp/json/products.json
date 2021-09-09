@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Каламбур",
+    "category": "Кресла",
+    "params": ""
+  },
+  {
+    "name": "Экспрессия",
+    "category": "Диваны",
+    "params": [
+                {
+                  "param_name": "Ширина",
+                  "value": "180"
+                },
+                {
+                  "param_name": "Цвет",
+                  "value": "Черный"
+                }
+              ]
+  },
+  {
+    "name": "Гигант",
+    "category": "Стулья",
+    "params": [
+                {
+                  "param_name": "Цвет",
+                  "value": "Коричневый"
+                },
+                {
+                  "param_name": "Материал",
+                  "value": "Дерево"
+                }
+              ]
+  },
+  {
+    "name": "Цветение",
+    "category": "Диваны",
+    "params": ""
+  },
+  {
+    "name": "Плацкарт",
+    "category": "Шкафы",
+    "params": ""
+  }
+]
