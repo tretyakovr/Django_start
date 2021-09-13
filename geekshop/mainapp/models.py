@@ -29,6 +29,10 @@ class Products(models.Model):
     name = models.CharField(verbose_name='Наименование', max_length=50, unique=True, blank=False)
     category = models.ForeignKey(Category, on_delete=models.RESTRICT)
     image = models.ImageField(upload_to='product_images', blank=True)
+    short_desc = models.CharField(verbose_name='краткое описание продукта', max_length=60, blank=True)
+    description = models.TextField(verbose_name='описание продукта', blank=True)
+    price = models.DecimalField(verbose_name='цена продукта', max_digits=8, decimal_places=2, default=0)
+    quantity = models.PositiveIntegerField(verbose_name='количество на складе', default=0)
     comments = models.TextField(verbose_name='Примечание', blank=True)
 
     class Meta:

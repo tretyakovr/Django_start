@@ -19,12 +19,17 @@ import mainapp.views as mainapp
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = 'mainapp'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products/', mainapp.products, name='products'),
+    # path('products/', mainapp.products, name='products'),
+    path('products/', include('mainapp.urls', namespace='products')),
     path('contacts/', mainapp.contacts, name='contacts'),
     path('', mainapp.main, name='main'),
-    path('auth/', include('authapp.urls', namespace='auth'))
+    path('auth/', include('authapp.urls', namespace='auth')),
+    path('category/<int:pk>/', mainapp.products, name='category'),
+    path('basket/', include('basketapp.urls', namespace='basket')),
 ]
 
 if settings.DEBUG:
