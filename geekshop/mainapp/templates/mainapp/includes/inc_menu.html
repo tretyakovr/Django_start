@@ -1,4 +1,6 @@
-<li>
+<a href="{% url 'main' %}" class="logo"></a>
+<ul class="menu">
+  <li>
   <a href="{% url 'products:index' %}"
      class="{% if request.resolver_match.namespace == 'products' %}
               active
@@ -6,3 +8,9 @@
     продукты
   </a>
 </li>
+<a href="#" class="search"></a>
+<a href="{% url 'basket:view' %}" class="basket">
+    <span>
+        {% if basket %} {{ basket|length }} {% endif %}
+    </span>
+</a>

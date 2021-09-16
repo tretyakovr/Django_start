@@ -8,14 +8,14 @@
 	<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
 </head>
 <body>
-	{% include 'mainapp/includes/inc_menu.html' %}
 	<div class="container">
 		<div class="slider">
 			<div class="header clearfix">
+				{% include 'mainapp/inc_menu.html' %}
 				<a href="/" class="logo"></a>
 				<ul class="menu">
 					<li><a href="/" class="active">домой</a></li>
-					<li><a href="{% url 'products' %}">продукты</a></li>
+					<li><a href="{% url 'products:index' %}">продукты</a></li>
 					<li><a href="{% url 'contacts' %}">контакты</a></li>
 				</ul>
 				<a href="#" class="search"></a>
@@ -39,7 +39,7 @@
 			<div class="clearfix">
 			</div>
 			<div class="tab-content">
-				<div class="block">
+				<!--<div class="block">
 					<a href="#"><img src="{% static 'img/product-1.jpg' %}" alt="">
 						<div class="text">
 							<img src="{% static 'img/icon-hover.png' %}" alt="img">
@@ -56,7 +56,20 @@
 							<p>Не оторваться. </p>
 						</div>
 					</a>
-				</div>	
+				</div>-->
+				{% for product in products %}
+				  <div class="block">
+					<a href="#">
+					  <img src="/media/{{ products.image }}" alt="{{ products.short_desc }}">
+					  <div class="text">
+						<h3>{{ products.category.name }}</h3>
+						<h4>{{ products.name }}</h4>
+						<p>{{ products.description }}</p>
+					  </div>
+					</a>
+				  </div>
+				{% endfor %}
+
 			</div>
 		</div>
 		

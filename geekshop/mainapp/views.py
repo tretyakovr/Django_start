@@ -3,9 +3,14 @@ from .models import Products, Params, ProdParams, Category
 from basketapp.models import Basket
 from django.shortcuts import get_object_or_404
 
-# Create your views here.
+
 def main(request):
-    return render(request, 'mainapp/index.html')
+    title = 'главная'
+
+    products = Products.objects.all()[:6]
+
+    content = {'title': title, 'products': products}
+    return render(request, 'mainapp/index.html', content)
 
 
 def products(request, pk=None):
