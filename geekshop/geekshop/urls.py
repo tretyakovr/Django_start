@@ -23,7 +23,6 @@ app_name = 'mainapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('products/', mainapp.products, name='products'),
     path('products/', include('mainapp.urls', namespace='products')),
     path('contacts/', mainapp.contacts, name='contacts'),
     path('', mainapp.main, name='main'),

@@ -2,6 +2,27 @@ from django.shortcuts import render
 from .models import Products, Params, ProdParams, Category
 from basketapp.models import Basket
 from django.shortcuts import get_object_or_404
+import random
+
+
+def get_basket(user):
+    if user.is_authenticated:
+        return Basket.objects.filter(user=user)
+    else:
+        return []
+
+
+def get_hot_product():
+    products = Products.objects.all()
+
+    return random.sample(list(products), 1)[0]
+
+
+def get_same_products(hot_product):
+    same_products = Products.objects.filter(category=hot_product.category). \
+                        exclude(pk=hot_product.pk)[:3]
+
+    return same_products
 
 
 def main(request):
@@ -25,6 +46,7 @@ def products(request, pk=None):
 
     title = 'продукты'
     links_menu = Category.objects.all()
+    basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
@@ -40,21 +62,25 @@ def products(request, pk=None):
             'category': category,
             'products': products,
             'params': params,
-            'prodparams': prodparams
+            'prodparams': prodparams,
         }
 
         return render(request, 'mainapp/products_list.html', content)
 
-    same_products = Products.objects.all()[3:5]
+    # same_products = Products.objects.all()[3:5]
+    hot_product = get_hot_product()
+    same_products = get_same_products(hot_product)
     category = Category.objects.all()
 
     content = {
         'title': title,
         'links_menu': links_menu,
-        'same_products': same_products,
         'params': params,
         'prodparams': prodparams,
-        'category': category
+        'category': category,
+        'hot_product': hot_product,
+        'same_products': same_products,
+        'basket': basket,
     }
 
     return render(request, 'mainapp/products.html', content)
@@ -67,3 +93,16 @@ def products(request, pk=None):
 
 def contacts(request):
     return render(request, 'mainapp/contact.html')
+
+
+def product(request, pk):
+    title = 'продукты'
+
+    content = {
+        'title': title,
+        'links_menu': Category.objects.all(),
+        'product': get_object_or_404(Products, pk=pk),
+        'basket': get_basket(request.user),
+    }
+
+    return render(request, 'mainapp/product.html', content)

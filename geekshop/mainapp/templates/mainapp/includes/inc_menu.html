@@ -1,16 +1,22 @@
 <a href="{% url 'main' %}" class="logo"></a>
 <ul class="menu">
-  <li>
-  <a href="{% url 'products:index' %}"
-     class="{% if request.resolver_match.namespace == 'products' %}
-              active
+    <li><a href="/">домой</a></li>
+    <li>
+        <a href="{% url 'products:index' %}"
+            class="{% if request.resolver_match.namespace == 'products' %}
+                active
             {% endif %}">
-    продукты
-  </a>
-</li>
+            продукты
+        </a>
+    </li>
+    <li><a href="{% url 'contacts' %}">контакты</a></li>
+</ul>
 <a href="#" class="search"></a>
 <a href="{% url 'basket:view' %}" class="basket">
-    <span>
-        {% if basket %} {{ basket|length }} {% endif %}
-    </span>
+  <span>
+    {% if basket %}
+      {{ basket.0.total_cost|floatformat:0 }} руб
+      ({{ basket.0.total_quantity }} шт)
+    {% endif %}
+  </span>
 </a>
