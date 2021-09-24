@@ -1,0 +1,35 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="params_list">
+    <button class="new_params">
+      <a href={% url 'admin:params_create' %}>
+        новый параметр товара
+      </a>
+    </button>
+		
+    {% for object in objects %}
+      <div class="params_record">
+        <div class="param_name">
+          {{ object.name|title }}
+        </div>
+        <div class="params_actions">
+          <button>
+            <a href={% url 'admin:params_update' object.pk %}>
+              редактировать
+            </a>
+          </button>
+          <button>
+            <a href={% url 'admin:params_delete' object.pk %}>
+              удалить
+            </a>
+          </button>
+        </div>
+        <div class="params_desc">
+          {{ object.description|title }}
+        </div>
+      </div>
+    {% endfor%}
+  </div>
+{% endblock %}

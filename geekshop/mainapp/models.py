@@ -4,6 +4,7 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(verbose_name='Наименование', max_length=50, unique=True, blank=False)
     comments = models.TextField(verbose_name='Примечание', blank=True)
+    is_active = models.BooleanField(verbose_name='активна', default=True)
 
     class Meta:
         db_table = 'Category'
