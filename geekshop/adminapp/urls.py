@@ -19,11 +19,12 @@ urlpatterns = [
     path('params/update/<int:pk>', adminapp.params_update, name='params_update'),
     path('params/delete/<int:pk>', adminapp.params_delete, name='params_delete'),
 
-    path('products/create/category/<int:pk>/', adminapp.products_create, name='product_create'),
+    path('products/create/category/<int:pk>/', adminapp.product_create, name='product_create'),
     path('products/read/category/<int:pk>/', adminapp.products, name='products'),
-    path('products/read/<int:pk>/', adminapp.products_read, name='product_read'),
-    path('products/update/<int:pk>/', adminapp.products_update, name='product_update'),
-    path('products/delete/<int:pk>/', adminapp.products_delete, name='product_delete'),
+    path('products/read/category/<int:pk>/page/<int:page>', adminapp.products, name='products'),
+    path('products/read/<int:pk>/', adminapp.product_read, name='product_read'),
+    path('products/update/<int:pk>/', adminapp.product_update, name='product_update'),
+    path('products/delete/<int:pk>/', adminapp.product_delete, name='product_delete'),
 
     path('prodparams/create/products/<int:pk>/', adminapp.prodparams_create, name='prodparams_create'),
     path('prodparams/read/products/<int:pk>/', adminapp.prodparams, name='prodparams'),
