@@ -10,6 +10,58 @@ from mainapp.forms import CategoryRegisterForm
 from adminapp.forms import CategoryEditForm
 from adminapp.forms import ProductEditForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic.list import ListView
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+from django.urls import reverse_lazy
+
+
+class UsersListView(ListView):
+    model = ShopUser
+    template_name = 'adminapp/users.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    template_name = 'adminapp/category_update.html'
+    success_url = reverse_lazy('admin:categories')
+    fields = '__all__'
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    template_name = 'adminapp/category_update.html'
+    success_url = reverse_lazy('admin:categories')
+    fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'категории/редактирование'
+
+        return context
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    template_name = 'adminapp/category_delete.html'
+    success_url = reverse_lazy('admin:categories')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ProductDetailView(DetailView):
+    model = Products
+    template_name = 'adminapp/product_read.html'
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -90,37 +142,37 @@ def categories(request):
     return render(request, 'adminapp/categories.html', content)
 
 
-def category_create(request):
-    title = 'категории товаров/создание'
+# def category_create(request):
+#     title = 'категории товаров/создание'
+#
+#     if request.method == 'POST':
+#         category_form = CategoryRegisterForm(request.POST, request.FILES)
+#         if category_form.is_valid():
+#             category_form.save()
+#             return HttpResponseRedirect(reverse('admin:categories'))
+#     else:
+#         category_form = CategoryRegisterForm()
+#
+#     content = {'title': title, 'update_form': category_form}
+#
+#     return render(request, 'adminapp/category_update.html', content)
 
-    if request.method == 'POST':
-        category_form = CategoryRegisterForm(request.POST, request.FILES)
-        if category_form.is_valid():
-            category_form.save()
-            return HttpResponseRedirect(reverse('admin:categories'))
-    else:
-        category_form = CategoryRegisterForm()
 
-    content = {'title': title, 'update_form': category_form}
-
-    return render(request, 'adminapp/category_update.html', content)
-
-
-def category_update(request, pk):
-    title = 'категории товаров/редактирование'
-
-    edit_category = get_object_or_404(Category, pk=pk)
-    if request.method == 'POST':
-        edit_form = CategoryEditForm(request.POST, request.FILES, instance=edit_category)
-        if edit_form.is_valid():
-            edit_form.save()
-            return HttpResponseRedirect(reverse('admin:category_update', args=[edit_category.pk]))
-    else:
-        edit_form = CategoryEditForm(instance=edit_category)
-
-    content = {'title': title, 'update_form': edit_form}
-
-    return render(request, 'adminapp/category_update.html', content)
+# def category_update(request, pk):
+#     title = 'категории товаров/редактирование'
+#
+#     edit_category = get_object_or_404(Category, pk=pk)
+#     if request.method == 'POST':
+#         edit_form = CategoryEditForm(request.POST, request.FILES, instance=edit_category)
+#         if edit_form.is_valid():
+#             edit_form.save()
+#             return HttpResponseRedirect(reverse('admin:category_update', args=[edit_category.pk]))
+#     else:
+#         edit_form = CategoryEditForm(instance=edit_category)
+#
+#     content = {'title': title, 'update_form': edit_form}
+#
+#     return render(request, 'adminapp/category_update.html', content)
 
 
 def category_delete(request, pk):
