@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 import mainapp.views as mainapp
@@ -22,13 +22,13 @@ import mainapp.views as mainapp
 app_name = 'mainapp'
 
 urlpatterns = [
-    path('admin/', include('adminapp.urls', namespace='admin')),
-    path('products/', include('mainapp.urls', namespace='products')),
-    path('contacts/', mainapp.contacts, name='contacts'),
-    path('', mainapp.main, name='main'),
-    path('auth/', include('authapp.urls', namespace='auth')),
-    path('category/<int:pk>/', mainapp.products, name='category'),
-    path('basket/', include('basketapp.urls', namespace='basket')),
+    re_path(r'^admin/', include('adminapp.urls', namespace='admin')),
+    re_path(r'^products/', include('mainapp.urls', namespace='products')),
+    re_path(r'^contacts/', mainapp.contacts, name='contacts'),
+    re_path(r'^$', mainapp.main, name='main'),
+    re_path(r'^auth/', include('authapp.urls', namespace='auth')),
+    re_path(r'^category/(?P<pk>\d+)/$', mainapp.products, name='category'),
+    re_path(r'^basket/', include('basketapp.urls', namespace='basket')),
 ]
 
 if settings.DEBUG:
