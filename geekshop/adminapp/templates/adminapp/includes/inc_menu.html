@@ -17,7 +17,7 @@
        class="{% if request.resolver_match.url_name == 'categories' or category.name %}
                 active
               {% endif %}">
-      категории
+      категории товаров
       {% if category %}
         :<span>{{ category.name }}</span>
       {% endif %}

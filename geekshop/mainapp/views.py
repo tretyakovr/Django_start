@@ -48,39 +48,40 @@ def products(request, pk=None, page=1):
     links_menu = Category.objects.filter(is_active=True)
     basket = get_basket(request.user)
 
+    # if pk is not None:
     if pk is not None:
-        if pk is not None:
-            if pk == 0:
-                category = {
-                    'pk': 0,
-                    'name': 'все'
-                }
-                # products = Products.objects.filter(is_active=True, category__is_active=True).order_by('price')
-                products = Products.objects.filter(category__is_active=True).order_by('price')
-            else:
-                category = get_object_or_404(Category, pk=pk)
-                # products = Products.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by('price')
-                products = Products.objects.filter(category__pk=pk, category__is_active=True).order_by('price')
+        if pk == 0:
 
-            paginator = Paginator(products, 2)
-            try:
-                products_paginator = paginator.page(page)
-            except PageNotAnInteger:
-                products_paginator = paginator.page(1)
-            except EmptyPage:
-                products_paginator = paginator.page(paginator.num_pages)
-
-            content = {
-                'title': title,
-                'links_menu': links_menu,
-                'category': category,
-                'products': products_paginator,
-                'basket': basket,
+            category = {
+                'pk': 0,
+                'name': 'все'
             }
+            # products = Products.objects.filter(is_active=True, category__is_active=True).order_by('price')
+            products = Products.objects.filter(category__is_active=True).order_by('price')
+        else:
+            category = get_object_or_404(Category, pk=pk)
+            # products = Products.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by('price')
+            products = Products.objects.filter(category__pk=pk, category__is_active=True).order_by('price')
 
-            return render(request, 'mainapp/products_list.html', content)
+        paginator = Paginator(products, 2)
+        try:
+            products_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            products_paginator = paginator.page(1)
+        except EmptyPage:
+            products_paginator = paginator.page(paginator.num_pages)
 
-            # same_products = Products.objects.all()[3:5]
+        content = {
+            'title': title,
+            'links_menu': links_menu,
+            'category': category,
+            'products': products_paginator,
+            'basket': basket,
+        }
+
+        return render(request, 'mainapp/products_list.html', content)
+
+        # same_products = Products.objects.all()[3:5]
     hot_product = get_hot_product()
     same_products = get_same_products(hot_product)
     category = Category.objects.all()
@@ -119,3 +120,30 @@ def product(request, pk):
     }
 
     return render(request, 'mainapp/product.html', content)
+
+
+def products_all(request, page=1):
+
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
+    title = 'продукты'
+    links_menu = Category.objects.filter(is_active=True)
+    basket = get_basket(request.user)
+
+    category = {
+        'pk': 0,
+        'name': 'все'
+    }
+    products = Products.objects.filter(category__is_active=True).order_by('price')
+
+    content = {
+        'title': title,
+        'links_menu': links_menu,
+        'category': category,
+        'products': products,
+        'basket': basket,
+    }
+
+    return render(request, 'mainapp/products_list.html', content)
