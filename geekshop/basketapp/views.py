@@ -19,8 +19,8 @@ def basket(request):
         'basket_items': basket_items,
     }
 
-    for item in basket_items:
-        print(item.price)
+    # for item in basket_items:
+    #     print(item.price)
 
     return render(request, 'basketapp/basket.html', content)
 

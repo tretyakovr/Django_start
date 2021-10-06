@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social_vk')),
     re_path(r'^auth/verify/google/oauth2/', include("social_django.urls", namespace="social_google")),
     re_path(r'^admin/', include('adminapp.urls', namespace='admin')),
+    re_path(r'^order/', include('ordersapp.urls', namespace='order')),
 ]
 
 if settings.DEBUG:
